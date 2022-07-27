@@ -45,3 +45,4 @@ jobs:
           script: |
             cd yeshacalendar
             echo ${{ secrets.SSH_PASSWORD }} | sudo -S docker-compose up -d
+
