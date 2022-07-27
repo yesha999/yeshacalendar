@@ -9,7 +9,7 @@ jobs:
       - name: docker build
         run: docker build -t yesha999/yeshacalendar:$GITHUB_REF_NAME-$GITHUB_RUN_ID .
       - name: docker login
-        run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_LOGIN }} --password-stdin
+        run: echo ${{ secrets.DOCKER_TOKEN }} | docker login -u ${{ secrets.DOCKER_LOGIN }} --password-stdin
       - name: docker push
         run: docker push yesha999/yeshacalendar:$GITHUB_REF_NAME-$GITHUB_RUN_ID
   deploy:
