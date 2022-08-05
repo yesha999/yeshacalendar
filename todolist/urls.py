@@ -6,3 +6,4 @@ urlpatterns = [
 ]
 
 urlpatterns += [path("core/", include("core.urls"))]
+urlpatterns += [path('', include('social_django.urls'))]
