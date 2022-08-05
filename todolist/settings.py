@@ -14,6 +14,7 @@ from pathlib import Path
 
 import dj_database_url
 from dotenv import load_dotenv
+
 load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -130,7 +131,7 @@ AUTHENTICATION_BACKENDS = (
     # бекенд классической аутентификации, чтобы работала авторизация через обычный логин и пароль
 )
 
-SOCIAL_AUTH_VK_OAUTH2_KEY = f"{os.getenv('SOCIAL_AUTH_VK_OAUTH2_KEY')}"
+SOCIAL_AUTH_VK_OAUTH2_KEY = {os.getenv('SOCIAL_AUTH_VK_OAUTH2_KEY')}
 SOCIAL_AUTH_VK_OAUTH2_SECRET = f"{os.getenv('SOCIAL_AUTH_VK_OAUTH2_SECRET')}"
 SOCIAL_AUTH_VK_OAUTH2_SCOPE = ["email", "photos", "notify"]
 LOGIN_REDIRECT_URL = '/logged-in/'
