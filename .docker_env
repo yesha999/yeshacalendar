@@ -1,3 +1,4 @@
 DEBUG=True
 DATABASE_URL=postgres://postgres:password@postgres:5432/yeshacalendar
 SOCIAL_AUTH_VK_OAUTH2_SECRET=x7gnLr5KYoTq27wN6hVv
+SECRET_KEY=django-insecure-*^4$q$pne1(y2ijgzb@q(vayp=ia036o%a_emv-*2$9v@69gby
