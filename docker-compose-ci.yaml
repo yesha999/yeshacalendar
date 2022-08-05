@@ -4,7 +4,8 @@ services:
   front:
     image: sermalenk/skypro-front:lesson-34
     ports:
-      - 443:80
+      - 80:80
+      - 443:443
     depends_on:
       - api
   api:
