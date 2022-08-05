@@ -145,7 +145,7 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.user.user_details',
 )
 SOCIAL_AUTH_VK_OAUTH2_KEY = 51394349
-SOCIAL_AUTH_VK_OAUTH2_SECRET = "x7gnLr5KYoTq27wN6hVv"
+SOCIAL_AUTH_VK_OAUTH2_SECRET = f"{os.getenv('SOCIAL_AUTH_VK_OAUTH2_SECRET')}"
 SOCIAL_AUTH_VK_OAUTH2_SCOPE = ["email", "photos", "notify"]
 LOGIN_REDIRECT_URL = '/logged-in/'
 SOCIAL_AUTH_LOGIN_ERROR_URL = "/login-error/"
