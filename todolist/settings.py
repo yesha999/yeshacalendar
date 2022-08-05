@@ -131,8 +131,8 @@ AUTHENTICATION_BACKENDS = (
 # бекенд классической аутентификации, чтобы работала авторизация через обычный логин и пароль
 )
 
-SOCIAL_AUTH_VK_OAUTH2_KEY = os.getenv("SOCIAL_AUTH_VK_OAUTH2_KEY")
-SOCIAL_AUTH_VK_OAUTH2_SECRET = os.getenv("SOCIAL_AUTH_VK_OAUTH2_SECRET")
+SOCIAL_AUTH_VK_OAUTH2_KEY = "x7gnLr5KYoTq27wN6hVv"
+SOCIAL_AUTH_VK_OAUTH2_SECRET = "908a9c95908a9c95908a9c95d0939aabb89908a908a9c95f266aa4338f9d21f4653e771"
 SOCIAL_AUTH_VK_OAUTH2_SCOPE = ["email", "photos", "notify"]
 LOGIN_REDIRECT_URL = '/logged-in/'
 SOCIAL_AUTH_LOGIN_ERROR_URL = "/login-error/"
