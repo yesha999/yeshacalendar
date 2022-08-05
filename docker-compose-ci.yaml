@@ -16,8 +16,6 @@ services:
         condition: service_completed_successfully
     volumes:
       - ./.env:/app/.env
-    environment:
-      SOCIAL_AUTH_VK_OAUTH2_SECRET: ${{ secrets.SOCIAL_AUTH_VK_OAUTH2_SECRET }}
   migrations:
     image: yesha999/yeshacalendar:$GITHUB_REF_NAME-$GITHUB_RUN_ID
     depends_on:
@@ -32,6 +30,7 @@ services:
       POSTGRES_PASSWORD: $DB_PASSWORD
       POSTGRES_DB: $DB_NAME
       POSTGRES_USER: $DB_USER
+      SOCIAL_AUTH_VK_OAUTH2_SECRET: $SOCIAL_AUTH_VK_OAUTH2_SECRET
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
