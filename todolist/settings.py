@@ -27,7 +27,7 @@ load_dotenv(dotenv_path=env_path)
 SECRET_KEY = f"{os.getenv('SECRET_KEY')}"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG")
+DEBUG = f"{os.getenv('DEBUG')}"
 
 ALLOWED_HOSTS = ["*"]
 
@@ -130,8 +130,8 @@ AUTHENTICATION_BACKENDS = (
     # бекенд классической аутентификации, чтобы работала авторизация через обычный логин и пароль
 )
 
-SOCIAL_AUTH_VK_OAUTH2_KEY = os.getenv("SOCIAL_AUTH_VK_OAUTH2_KEY")
-SOCIAL_AUTH_VK_OAUTH2_SECRET = os.getenv("SOCIAL_AUTH_VK_OAUTH2_SECRET")
+SOCIAL_AUTH_VK_OAUTH2_KEY = f"{os.getenv('SOCIAL_AUTH_VK_OAUTH2_KEY')}"
+SOCIAL_AUTH_VK_OAUTH2_SECRET = f"{os.getenv('SOCIAL_AUTH_VK_OAUTH2_SECRET')}"
 SOCIAL_AUTH_VK_OAUTH2_SCOPE = ["email", "photos", "notify"]
 LOGIN_REDIRECT_URL = '/logged-in/'
 SOCIAL_AUTH_LOGIN_ERROR_URL = "/login-error/"
