@@ -16,6 +16,8 @@ services:
         condition: service_completed_successfully
     volumes:
       - ./.env:/app/.env
+    environment:
+      SOCIAL_AUTH_VK_OAUTH2_SECRET: $SOCIAL_AUTH_VK_OAUTH2_SECRET
   migrations:
     image: yesha999/yeshacalendar:$GITHUB_REF_NAME-$GITHUB_RUN_ID
     depends_on:
