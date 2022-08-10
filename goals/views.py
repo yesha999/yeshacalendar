@@ -5,8 +5,9 @@ from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateDe
 from rest_framework.pagination import LimitOffsetPagination
 
 from goals.filters import GoalDateFilter
-from goals.models import GoalCategory, Goal
-from goals.serializers import GoalCategoryCreateSerializer, GoalCategorySerializer, GoalCreateSerializer, GoalSerializer
+from goals.models import GoalCategory, Goal, GoalComment
+from goals.serializers import GoalCategoryCreateSerializer, GoalCategorySerializer, GoalCreateSerializer, \
+    GoalSerializer, GoalCommentCreateSerializer, GoalCommentSerializer
 
 
 class GoalCategoryCreateView(CreateAPIView):
@@ -25,6 +26,7 @@ class GoalCategoryListView(ListAPIView):
         filters.OrderingFilter,
         filters.SearchFilter
     ]
+    filterset_fields = ["user"]
     ordering_fields = ["title", "created"]
     ordering = ["title"]
     search_fields = ["title"]
@@ -101,5 +103,37 @@ class GoalView(RetrieveUpdateDestroyAPIView):
         return instance
 
 
-class GoalCommentsCreateView(CreateAPIView):
-    pass
+class GoalCommentCreateView(CreateAPIView):
+    model = GoalComment
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = GoalCommentCreateSerializer
+
+
+class GoalCommentListView(ListAPIView):
+    model = GoalComment
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = GoalCommentSerializer
+    pagination_class = LimitOffsetPagination
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.OrderingFilter,
+    ]
+    filterset_fields = ["goal"]
+    ordering_fields = ["user", "goal", "text", "created"]
+    ordering = ["-created"]
+
+    def get_queryset(self):
+        return GoalComment.objects.filter(
+            user=self.request.user
+        )
+
+
+class GoalCommentView(RetrieveUpdateDestroyAPIView):
+    model = GoalComment
+    serializer_class = GoalCommentSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return GoalComment.objects.filter(
+            user=self.request.user
+        )
