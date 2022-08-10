@@ -43,7 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'social_django',
+    'django_filters',
     'core',
+    'goals',
 ]
 
 MIDDLEWARE = [
@@ -124,7 +126,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'core.User'
 
-SOCIAL_AUTH_POSTGRES_JSONFIELD = True
 SOCIAL_AUTH_JSONFIELD_ENABLED = True
 
 AUTHENTICATION_BACKENDS = (
