@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import permissions, filters
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView
@@ -74,7 +75,10 @@ class GoalListView(ListAPIView):
 
     def get_queryset(self):
         return Goal.objects.filter(
-            user=self.request.user, is_deleted=False
+            ~Q(status=Goal.Status.archived,
+               user=self.request.user,
+               )
+
         )
 
 
@@ -85,7 +89,10 @@ class GoalView(RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         return Goal.objects.filter(
-            user=self.request.user, is_deleted=False
+            ~Q(status=Goal.Status.archived,
+               user=self.request.user,
+               )
+
         )
 
     def perform_destroy(self, instance: Goal):
