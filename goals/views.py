@@ -73,7 +73,7 @@ class GoalListView(ListAPIView):
     filterset_class = GoalDateFilter
 
     def get_queryset(self):
-        return GoalCategory.objects.filter(
+        return Goal.objects.filter(
             user=self.request.user, is_deleted=False
         )
 
@@ -84,7 +84,7 @@ class GoalView(RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return GoalCategory.objects.filter(
+        return Goal.objects.filter(
             user=self.request.user, is_deleted=False
         )
 
