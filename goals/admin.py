@@ -1,11 +1,11 @@
 from django.contrib import admin
 
-from goals.models import GoalCategory, Goal, GoalComment
+from goals.models import GoalCategory, Goal, GoalComment, Board, BoardParticipant
 
 
 class GoalCategoryAdmin(admin.ModelAdmin):
-    list_display = ("title", "user", "created", "updated")
-    search_fields = ("title", "user")
+    list_display = ("title", "user", "created", "updated", "board")
+    search_fields = ("title", "user", "board")
 
 
 class GoalAdmin(admin.ModelAdmin):
@@ -14,5 +14,8 @@ class GoalAdmin(admin.ModelAdmin):
 
 
 admin.site.register(GoalCategory, GoalCategoryAdmin)
-admin.site.register(Goal)
+admin.site.register(Goal, GoalAdmin)
 admin.site.register(GoalComment)
+admin.site.register(Board)
+admin.site.register(BoardParticipant)
+
