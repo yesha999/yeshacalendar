@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import Dict
 
 from django.db import transaction
 from rest_framework import serializers
@@ -14,7 +14,7 @@ class BoardCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Board
         fields = "__all__"
-        read_only_fields = ("id", "created", "updated")
+        read_only_fields = ("id", "created", "updated", "user")
 
     def create(self, validated_data):
         user = validated_data.pop("user")
@@ -81,6 +81,8 @@ class GoalCategoryCreateSerializer(serializers.ModelSerializer):
 
 
 class GoalCategorySerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+
     class Meta:
         model = GoalCategory
         fields = "__all__"
