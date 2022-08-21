@@ -4,7 +4,7 @@ from goals.models import Goal
 
 
 @pytest.mark.django_db
-def test_board_create(client, csrf_token):
+def test_board_create(client, csrf_token: str):
     header = {"X-CSRFToken": csrf_token}
     data = {"title": "test board title"}
     post_response = client.post("/goals/board/create", data=data, content_type="application/json",
@@ -17,7 +17,7 @@ def test_board_create(client, csrf_token):
 
 
 @pytest.mark.django_db
-def test_goal_category_create(client, csrf_token):
+def test_goal_category_create(client, csrf_token: str):
     header = {"X-CSRFToken": csrf_token}
 
     create_board = client.post("/goals/board/create", data={"title": "test board title"},
@@ -42,7 +42,7 @@ def test_goal_category_create(client, csrf_token):
 
 
 @pytest.mark.django_db
-def test_goal_create(client, csrf_token):
+def test_goal_create(client, csrf_token: str):
     header = {"X-CSRFToken": csrf_token}
     create_board = client.post("/goals/board/create", data={"title": "test board title"},
                                content_type="application/json", headers=header)
