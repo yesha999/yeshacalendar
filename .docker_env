@@ -1,3 +1,4 @@
 DEBUG=True
 DATABASE_URL=postgres://postgres:password@postgres:5432/yeshacalendar
 SOCIAL_AUTH_VK_OAUTH2_SECRET=x7gnLr5KYoTq27wN6hVv
+BOT_TOKEN=5529504582:AAHTi_7pp3caRgJdAqwM6JcMTkX54wSUXi0

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django_filters',
     'core',
     'goals',
+    'bot',
 ]
 
 MIDDLEWARE = [
@@ -150,3 +151,6 @@ SOCIAL_AUTH_VK_OAUTH2_SECRET = f"{os.getenv('SOCIAL_AUTH_VK_OAUTH2_SECRET')}"
 SOCIAL_AUTH_VK_OAUTH2_SCOPE = ["email", "photos", "notify"]
 LOGIN_REDIRECT_URL = '/logged-in/'
 SOCIAL_AUTH_LOGIN_ERROR_URL = "/login-error/"
+
+
+BOT_TOKEN = f"{os.getenv('BOT_TOKEN')}"
