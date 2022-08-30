@@ -54,7 +54,7 @@ class UpdateObj:
 @dataclass
 class GetUpdatesResponse:
     ok: bool
-    result: List[Optional[UpdateObj, None]]
+    result: List[UpdateObj] = field(default_factory=list)
 
     Schema: ClassVar[Type[Schema]] = Schema
 
