@@ -40,9 +40,7 @@ services:
   bot:
     image: yesha999/yeshacalendar:$GITHUB_REF_NAME-$GITHUB_RUN_ID
     depends_on:
-      postgres:
-        condition: service_healthy
-      migrations:
+      api:
         condition: service_completed_successfully
     volumes:
       - ./.env:/app/.env

@@ -51,9 +51,7 @@ services:
       context: .
     image: yesha999/yeshacalendar
     depends_on:
-      postgres:
-        condition: service_healthy
-      migrations:
+      api:
         condition: service_completed_successfully
     volumes:
       - ./.docker_env:/app/.env
