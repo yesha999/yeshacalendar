@@ -23,6 +23,8 @@ class Command(BaseCommand):
     def handle_goals_message(self, message: Message, tg_user: TgUser):
         if "/goals" in message.text:
             self.send_goals(message, tg_user)
+        elif "/create" in message.text:
+            pass
         else:
             self.tg_client.send_message(message.chat.id, "Неизвестная команда")
 
