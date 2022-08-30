@@ -18,13 +18,16 @@ class Command(BaseCommand):
             goals_message = "\n".join([f"{goal.id}) {goal.title}" for goal in goals])
             self.tg_client.send_message(message.chat.id, goals_message)
         else:
-            self.tg_client.send_message(message.chat.id, "Нет целей")
+            self.tg_client.send_message(message.chat.id, "Нет целей, /create для создания")
 
-    def handle_goals_message(self, message: Message, tg_user: TgUser):
+    def send_boards(self, message: Message, tg_user: TgUser):
+        self.tg_client.send_message(message.chat.id, "пока создание недоступно, в разработке")
+
+    def handle_user_message(self, message: Message, tg_user: TgUser):
         if "/goals" in message.text:
             self.send_goals(message, tg_user)
         elif "/create" in message.text:
-            pass
+            self.send_boards(message, tg_user)
         else:
             self.tg_client.send_message(message.chat.id, "Неизвестная команда")
 
@@ -42,7 +45,7 @@ class Command(BaseCommand):
         if tg_user.user is None:
             self.handle_verification_message(message, tg_user)
         else:
-            self.handle_goals_message(message, tg_user)
+            self.handle_user_message(message, tg_user)
 
     def handle(self, *args, **options):
         offset = 0
