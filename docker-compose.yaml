@@ -52,7 +52,7 @@ services:
     image: yesha999/yeshacalendar
     depends_on:
       api:
-        condition: service_completed_successfully
+        condition: service_healthy
     volumes:
       - ./.docker_env:/app/.env
     command: python manage.py runbot

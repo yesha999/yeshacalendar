@@ -41,7 +41,7 @@ services:
     image: yesha999/yeshacalendar:$GITHUB_REF_NAME-$GITHUB_RUN_ID
     depends_on:
       api:
-        condition: service_completed_successfully
+        condition: service_healthy
     volumes:
       - ./.env:/app/.env
     command: python manage.py runbot
