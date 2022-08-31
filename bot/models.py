@@ -5,7 +5,8 @@ from django.db import models
 from core.models import User
 from goals.models import Board, GoalCategory
 
-SYMBOLS = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM12345678901234567890"
+SYMBOLS = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM12345678901234567890"  # Цифры 2 раза для того,
+# чтобы чаще попадались, так коды верификации выглядят красивее
 
 
 class TgUser(models.Model):
@@ -33,9 +34,9 @@ class TgUser(models.Model):
 
     active_board = models.ForeignKey(Board, verbose_name="Поле доски для создания категории", on_delete=models.PROTECT,
                                      null=True, blank=True, default=None) #  поле нужно для того,
-    # чтобы запомнить в процессе исполнения бота в какую доску класть создаваемую цель
+    # чтобы запомнить в процессе исполнения бота в какую доску класть создаваемую цель (категорию)
     active_category = models.ForeignKey(GoalCategory, verbose_name="Поле категории для создания цели",
-                                        on_delete=models.PROTECT, null=True, blank=True, default=None)
+                                        on_delete=models.PROTECT, null=True, blank=True, default=None)  # см. выше
 
     def set_verification_code(self):
         self.verification_code = "".join([random.choice(SYMBOLS) for i in range(5)])

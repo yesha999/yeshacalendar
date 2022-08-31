@@ -4,6 +4,10 @@ from goals.models import BoardParticipant, GoalCategory, Board, Goal, GoalCommen
 
 
 class BoardPermission(permissions.IsAuthenticated):
+    """
+    Пермишн наследуется от IsAuthenticated и добавляет новый функционал:
+    разрешает изменять, удалять доску только ее создателю
+    """
     def has_object_permission(self, request, view, obj: Board):
         _filter = {"user": request.user, "board": obj}
         if request.method not in permissions.SAFE_METHODS:
@@ -12,6 +16,10 @@ class BoardPermission(permissions.IsAuthenticated):
 
 
 class GoalCategoryPermission(permissions.IsAuthenticated):
+    """
+    Пермишн наследуется от IsAuthenticated и добавляет новый функционал:
+    разрешает изменять, удалять категорию только ее создателю и редактору доски
+    """
     def has_object_permission(self, request, view, obj: GoalCategory):
         _filter = {"user": request.user, "board": obj.board}
         if request.method not in permissions.SAFE_METHODS:
@@ -25,6 +33,10 @@ class GoalCategoryPermission(permissions.IsAuthenticated):
 
 
 class GoalPermission(permissions.IsAuthenticated):
+    """
+    Пермишн наследуется от IsAuthenticated и добавляет новый функционал:
+    разрешает изменять, удалять цель только создателю или редактору доски
+    """
     def has_object_permission(self, request, view, obj: Goal):
         _filter = {"user": request.user, "board": obj.category.board}
         if request.method not in permissions.SAFE_METHODS:
@@ -33,6 +45,10 @@ class GoalPermission(permissions.IsAuthenticated):
 
 
 class GoalCommentPermission(permissions.IsAuthenticated):
+    """
+    Пермишн наследуется от IsAuthenticated и добавляет новый функционал:
+    разрешает изменять, удалять комментарий только его создателю (возвращает False в ином случае)
+    """
     def has_object_permission(self, request, view, obj: GoalComment):
         if request.method in permissions.SAFE_METHODS:
             return True
@@ -40,6 +56,10 @@ class GoalCommentPermission(permissions.IsAuthenticated):
 
 
 class GoalCommentCreatePermission(permissions.IsAuthenticated):
+    """
+    Пермишн наследуется от IsAuthenticated и добавляет новый функционал:
+    разрешает добавлять комментарии к целям только создателям или редакторам доски
+    """
     def has_object_permission(self, request, view, obj: GoalComment):
         if request.method in permissions.SAFE_METHODS:
             return True

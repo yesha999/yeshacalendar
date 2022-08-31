@@ -28,6 +28,11 @@ class BoardView(RetrieveUpdateDestroyAPIView):
         return Board.objects.filter(participants__user=self.request.user, is_deleted=False)
 
     def perform_destroy(self, instance: Board):
+        """
+        Не удаляет доску, а меняет is_deleted доски и всех находящих в ней категорий на False,
+        у целей статус меняется на Архив
+        :param instance:
+        """
         with transaction.atomic():
             instance.is_deleted = True
             instance.save()

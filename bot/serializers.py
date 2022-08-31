@@ -13,6 +13,10 @@ class VerificationSerializer(serializers.ModelSerializer):
         read_only_fields = ("tg_chat_id", "tg_user_id", "tg_username",)
 
     def validate(self, attrs: dict):
+        """
+        Проверяем правильность кода верификации.
+        :param attrs:
+        """
         verification_code = attrs.get("verification_code")
         tg_user = TgUser.objects.filter(verification_code__exact=verification_code).first()
         if not tg_user:
