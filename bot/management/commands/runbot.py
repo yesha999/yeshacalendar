@@ -13,9 +13,9 @@ class Command(BaseCommand):
         self.tg_client = TgClient(settings.BOT_TOKEN)
 
     def send_goals(self, message: Message, tg_user: TgUser):
-        goals = Goal.objects.filter(user=tg_user.user)
+        goals = Goal.objects.filter(category__board__participants__user=tg_user.user)
         if goals:
-            goals_message = "\n".join([f"{goal.id}) {goal.title} "
+            goals_message = "\n".join([f"{goal.title} "
                                        f"http://yeshacalendar.ga/categories/goals?goal={goal.id}" for goal in goals])
             self.tg_client.send_message(message.chat.id, goals_message)
         else:
@@ -52,7 +52,7 @@ class Command(BaseCommand):
                                     "Напишите название категории (если такой нет, будет создана новая)")
         if categories:
             self.tg_client.send_message(message.chat.id,
-                                        '\n'.join([f"{category.id}) {category.title}" for category in categories]))
+                                        '\n'.join([f"{category.title}" for category in categories]))
         else:
             self.tg_client.send_message(message.chat.id, "Существующих категорий не найдено")
 
@@ -60,7 +60,7 @@ class Command(BaseCommand):
         boards = Board.objects.filter(participants__user=tg_user.user, is_deleted=False)
         self.tg_client.send_message(message.chat.id, "Напишите название доски (если такой нет, будет создана новая)")
         if boards:
-            self.tg_client.send_message(message.chat.id, '\n'.join([f"{board.id}) {board.title}" for board in boards]))
+            self.tg_client.send_message(message.chat.id, '\n'.join([f"{board.title}" for board in boards]))
         else:
             self.tg_client.send_message(message.chat.id, "Существующих досок не найдено")
 
