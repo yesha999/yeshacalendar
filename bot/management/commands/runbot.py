@@ -87,11 +87,12 @@ class Command(BaseCommand):
             tg_user.bot_condition = TgUser.Condition.start
         tg_user.save(update_fields=["bot_condition"])
 
-
     def handle_verification_message(self, message: Message, tg_user: TgUser):
         tg_user.set_verification_code()
         tg_user.save(update_fields=["verification_code"])
-        self.tg_client.send_message(message.chat.id, tg_user.verification_code)
+        self.tg_client.send_message(
+            message.chat.id, f"Пожалуйста, пройдите верификацию на нашем сайте"
+                             f" http://yeshacalendar.ga,\nКод подтверждения: {tg_user.verification_code}")
 
     def handle_message(self, message: Message):
         tg_user, created = TgUser.objects.get_or_create(
