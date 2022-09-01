@@ -19,7 +19,7 @@
 
 Телеграм бот: [t.me/yeshacalendar_bot](https://t.me/yeshacalendar_bot)
 
-Проект сделан в рамках обучение в курсе python-developer от skypro, фронтенд стенд разработан
+Проект сделан в рамках обучения на курсе python-developer от skypro, фронтенд стенд разработан
 разработчиками skypro
 
 
