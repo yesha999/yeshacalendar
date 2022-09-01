@@ -6,7 +6,7 @@
 У задач (целей) можно проставлять приоритет, дедлайны, статус, писать к ним комментарии. 
 К приложению подключен телеграм бот.*
 
-![](readme picture.png)
+![](https://github.com/yesha999/yeshacalendar/blob/master/readme%20picture.png?raw=true)
 
 Необходимые инструменты:
 
@@ -15,9 +15,9 @@
 Приложение можно поставить локально, для этого нужно поднять docker-compose up, запустится 5 контейнеров:
 Фронтенд, АПИ, Постгрес, ТГ бот, миграции.
 
-Приложение размещено в интернете по адресу http://yeshacalendar.ga/
+Приложение размещено в интернете по адресу [yeshacalendar.ga](http://yeshacalendar.ga/)
 
-Телеграм бот: https://t.me/yeshacalendar_bot
+Телеграм бот: [t.me/yeshacalendar_bot](https://t.me/yeshacalendar_bot)
 
 Проект сделан в рамках обучение в курсе python-developer от skypro, фронтенд стенд разработан
 разработчиками skypro
