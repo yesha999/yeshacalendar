@@ -1,6 +1,6 @@
 import pytest
 
-from core.serialzers import User
+from core.models import User
 
 
 @pytest.fixture
@@ -13,3 +13,4 @@ def csrf_token(client, django_user_model: User):
         data={"username": "test", "password": "Test1234"},
         content_type="application/json")
     return response.cookies['csrftoken']
+
