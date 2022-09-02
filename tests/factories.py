@@ -1,7 +1,6 @@
 import factory.django
 
 from core.models import User
-from goals.models import Board
 
 
 class UserFactory(factory.django.DjangoModelFactory):
