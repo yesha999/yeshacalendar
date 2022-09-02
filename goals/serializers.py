@@ -43,6 +43,14 @@ class BoardSerializer(serializers.ModelSerializer):
         read_only_fields = ("id", "created", "updated")
 
     def update(self, instance: Board, validated_data: dict):
+        """
+        В нашем приложении для апдейтов используется метод PUT, и в каждом обновлении всегда присутствует
+        элемент participants, куда включаются все участники.
+        Метод получает всех участников, сравнивает со старыми участниками, удаляет лишних,
+        включает новых, меняет роли, если необходимо.
+        :param instance:
+        :param validated_data:
+        """
         owner: User = validated_data.pop("user")
         new_participants: dict = validated_data.pop("participants")
         new_by_id: Dict[int, dict] = {participant["user"].id: participant for participant in new_participants}
