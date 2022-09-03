@@ -20,12 +20,28 @@ def test_board_create(client, csrf_token: str):
 @pytest.mark.django_db
 def test_board_update(client, csrf_token: str):
     header = {"X-CSRFToken": csrf_token}
-
     create_board = client.post("/goals/board/create", data={"title": "test board title"},
                                content_type="application/json", headers=header)  # создаем доску
     participant = User.objects.create_user(username="board_participant", password="Test1234",
                                            email="test@test.test")  # создаем юзера для проверки дополнения участников
+    update_response = client.put(
+        f"/goals/board/{create_board.data['id']}",
+        data={"title": "test board title updated", "participants": [
+            {"role": BoardParticipant.Role.writer, "user": participant.username}]},
+        content_type="application/json", headers=header)
 
+    assert update_response.status_code == 200
+    assert update_response.data["title"] == "test board title updated"
+    assert update_response.data["participants"][-1]["user"] == participant.username
+
+
+@pytest.mark.django_db
+def test_board_detail_by_participat(client, csrf_token: str):
+    header = {"X-CSRFToken": csrf_token}
+    create_board = client.post("/goals/board/create", data={"title": "test board title"},
+                               content_type="application/json", headers=header)  # создаем доску
+    participant = User.objects.create_user(username="board_participant", password="Test1234",
+                                           email="test@test.test")  # создаем юзера для проверки дополнения участников
     update_response = client.put(
         f"/goals/board/{create_board.data['id']}",
         data={"title": "test board title updated", "participants": [
@@ -43,18 +59,38 @@ def test_board_update(client, csrf_token: str):
     get_by_participant = client.get(
         f"/goals/board/{create_board.data['id']}", headers=header_relogin)
 
+    assert get_by_participant.status_code == 200
+    assert get_by_participant.data == update_response.data
+
+
+@pytest.mark.django_db
+def test_board_update_not_owner(client, csrf_token: str):
+    header = {"X-CSRFToken": csrf_token}
+    create_board = client.post("/goals/board/create", data={"title": "test board title"},
+                               content_type="application/json", headers=header)  # создаем доску
+    participant = User.objects.create_user(username="board_participant", password="Test1234",
+                                           email="test@test.test")  # создаем юзера для проверки дополнения участников
+    update_response = client.put(
+        f"/goals/board/{create_board.data['id']}",
+        data={"title": "test board title updated", "participants": [
+            {"role": BoardParticipant.Role.writer, "user": participant.username}]},
+        content_type="application/json", headers=header)
+
+    logout = client.delete("/core/profile", headers=header)
+    relogin = client.post(
+        "/core/login",
+        data={"username": participant.username, "password": "Test1234"},
+        content_type="application/json")
+    relogin_token = relogin.cookies['csrftoken']
+    header_relogin = {"X-CSRFToken": relogin_token}
+
     update_response_by_participant = client.put(
         f"/goals/board/{create_board.data['id']}",
         data={"title": "title updated 2", "participants": [
             {"role": BoardParticipant.Role.writer, "user": participant.username}]},
         content_type="application/json", headers=header_relogin)
 
-    assert update_response.status_code == 200
-    assert update_response.data["title"] == "test board title updated"
-    assert update_response.data["participants"][-1]["user"] == participant.username
-    assert get_by_participant.status_code == 200
-    assert get_by_participant.data == update_response.data
-    assert update_response_by_participant.status_code == 403
+    assert update_response_by_participant.status_code == 403  # Доступно только владельцу
 
 
 @pytest.mark.django_db
@@ -125,34 +161,38 @@ def test_goal_category_create(client, csrf_token: str):
 
 
 @pytest.mark.django_db
-def test_goal_category_update_delete(client, csrf_token: str):
+def test_goal_category_update(client, csrf_token: str):
     header = {"X-CSRFToken": csrf_token}
 
     create_board = client.post("/goals/board/create", data={"title": "test board title"},
                                content_type="application/json", headers=header)
-
     data = {"title": "test category name", "board": create_board.data["id"]}
-
     post_response = client.post("/goals/goal_category/create", data=data, content_type="application/json",
                                 headers=header)
-
     update_response = client.put(
         f"/goals/goal_category/{post_response.data['id']}",
         data={"title": "test category name updated"},
         content_type="application/json", headers=header)
 
+    assert update_response.data["title"] == "test category name updated"
+
+
+@pytest.mark.django_db
+def test_goal_category_delete(client, csrf_token: str):
+    header = {"X-CSRFToken": csrf_token}
+    create_board = client.post("/goals/board/create", data={"title": "test board title"},
+                               content_type="application/json", headers=header)
+    data = {"title": "test category name", "board": create_board.data["id"]}
+    post_response = client.post("/goals/goal_category/create", data=data, content_type="application/json",
+                                headers=header)
     delete_response = client.delete(
         f"/goals/goal_category/{post_response.data['id']}", headers=header)
 
-    assert post_response.status_code == 201
-    assert post_response.data["title"] == data["title"]
-    assert post_response.data["board"] == data["board"]
-    assert update_response.data["title"] == "test category name updated"
     assert delete_response.status_code == 204
 
 
 @pytest.mark.django_db
-def test_goal_category_update_delete_by_participant(client, csrf_token: str):
+def test_goal_category_update_by_participant(client, csrf_token: str):
     header = {"X-CSRFToken": csrf_token}
 
     create_board = client.post("/goals/board/create", data={"title": "test board title"},
@@ -183,11 +223,38 @@ def test_goal_category_update_delete_by_participant(client, csrf_token: str):
         f"/goals/goal_category/{post_response.data['id']}",
         data={"title": "test category name updated"},
         content_type="application/json", headers=header_relogin)
-    delete_response = client.delete(
-        f"/goals/goal_category/{post_response.data['id']}", headers=header_relogin)
 
     assert update_response.status_code == 200
     assert update_response.data["title"] == "test category name updated"
+
+
+@pytest.mark.django_db
+def test_goal_category_delete_by_participant(client, csrf_token: str):
+    header = {"X-CSRFToken": csrf_token}
+    create_board = client.post("/goals/board/create", data={"title": "test board title"},
+                               content_type="application/json", headers=header)
+    data = {"title": "test category name", "board": create_board.data["id"]}
+    post_response = client.post("/goals/goal_category/create", data=data, content_type="application/json",
+                                headers=header)
+    not_owner_user = User.objects.create_user(username="board_participant", password="Test1234",
+                                              email="test@test.test")
+    add_participant_to_board = client.put(
+        f"/goals/board/{create_board.data['id']}",
+        data={"title": "test board title updated", "participants": [
+            {"role": BoardParticipant.Role.writer, "user": not_owner_user.username}]},
+        content_type="application/json", headers=header)
+
+    logout = client.delete("/core/profile", headers=header)
+    relogin = client.post(
+        "/core/login",
+        data={"username": not_owner_user.username, "password": "Test1234"},
+        content_type="application/json")
+    relogin_token = relogin.cookies['csrftoken']
+    header_relogin = {"X-CSRFToken": relogin_token}
+
+    delete_response = client.delete(
+        f"/goals/goal_category/{post_response.data['id']}", headers=header_relogin)
+
     assert delete_response.status_code == 204
 
 
